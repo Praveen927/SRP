@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "268474218617",
+    "project_id": "spr-project-236b2",
+    "storage_bucket": "spr-project-236b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268474218617:android:d8060470b242115a17fca8",
+        "android_client_info": {
+          "package_name": "com.example.srpproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "268474218617-vprijn1kgdv9iad9g08uks8prt3kgkoi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYTvsuauElTTHZVMVEh83XL3lDE9YVK2Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "268474218617-vprijn1kgdv9iad9g08uks8prt3kgkoi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
