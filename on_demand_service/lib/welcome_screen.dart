@@ -16,9 +16,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
+              children: [
                 Text(
-                  "ABCD",
+                  "Web app",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       letterSpacing: 10.0,
@@ -26,10 +26,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       fontFamily: 'Allura',
                       fontWeight: FontWeight.w900),
                 ),
-                Image(
-                    height: MediaQuery.of(context).size.height / 2,
-                    image: NetworkImage(
-                        "https://media.istockphoto.com/vectors/men-workers-set-in-uniform-vector-id977797014?k=20&m=977797014&s=612x612&w=0&h=O3EL4QSTxWa2JE3vY2gx4Tv35zVe8xyHUAqsevYwqjo=")),
+                Image(image: AssetImage("Resources/images/welcome_img.jpg")),
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 75,
                 ),
