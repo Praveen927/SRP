@@ -46,9 +46,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Image(
+                image: AssetImage("Resources/images/signup_img.jpg"),
                 height: MediaQuery.of(context).size.height / 2.5,
-                image: NetworkImage(
-                    "https://media.istockphoto.com/vectors/cartoon-electrician-vector-id1072764180?k=20&m=1072764180&s=612x612&w=0&h=cqzxRDe_SD-Z6Wp2fD81hGJIlW_xmA_lAeNQmRrA6Xc="),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height / 100,

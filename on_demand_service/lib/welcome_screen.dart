@@ -9,6 +9,8 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
+    double wid = MediaQuery.of(context).size.width;
+    double hei = MediaQuery.of(context).size.height;
     return Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
@@ -28,21 +30,46 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 Image(image: AssetImage("Resources/images/welcome_img.jpg")),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 75,
+                  height: hei / 10,
                 ),
                 RoundedButton(
                   colour: Colors.lightBlueAccent,
-                  title: 'Log In',
+                  title: 'User Log In',
                   onPressed: () {
-                    Navigator.pushNamed(context, 'login_screen');
+                    Navigator.pushNamed(context, 'user_login_screen');
                   },
                 ),
                 RoundedButton(
-                    colour: Colors.blueAccent,
-                    title: 'Register',
-                    onPressed: () {
-                      Navigator.pushNamed(context, 'registration_screen');
-                    }),
+                  colour: Colors.blueAccent,
+                  title: 'Professional Log In',
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'prof_login_screen');
+                  },
+                ),
+                SizedBox(height: hei / 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "New to Our App? ",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.w900),
+                    ),
+                    InkWell(
+                      focusColor: Colors.blue,
+                      onTap: () {
+                        Navigator.pushNamed(context, "registration_screen");
+                      },
+                      child: Text(
+                        "Register Here",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            color: Colors.blueAccent),
+                      ),
+                    )
+                  ],
+                ),
               ]),
         ));
   }
