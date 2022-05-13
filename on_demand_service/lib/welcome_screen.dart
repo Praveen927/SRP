@@ -20,17 +20,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  "Web app",
+                  "On Demand \nService",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      letterSpacing: 10.0,
+                      letterSpacing: 3.0,
                       fontSize: 50,
-                      fontFamily: 'Allura',
+                      fontFamily: 'Volkhov',
                       fontWeight: FontWeight.w900),
                 ),
-                Image(image: AssetImage("Resources/images/welcome_img.jpg")),
+                Image(image: AssetImage("Resources/images/welcome_img.png")),
                 SizedBox(
-                  height: hei / 10,
+                  height: hei / 20,
                 ),
                 RoundedButton(
                   colour: Colors.lightBlueAccent,
@@ -53,17 +53,45 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     Text(
                       "New to Our App? ",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.w900),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900, fontFamily: 'Volkhov'),
                     ),
                     InkWell(
                       focusColor: Colors.blue,
                       onTap: () {
-                        Navigator.pushNamed(context, "registration_screen");
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                  content: FittedBox(
+                                child: Column(
+                                  children: [
+                                    RoundedButton(
+                                      colour: Colors.lightBlueAccent,
+                                      title: 'User Register',
+                                      onPressed: () {
+                                        Navigator.pushNamed(context,
+                                            'user_registration_screen');
+                                      },
+                                    ),
+                                    RoundedButton(
+                                      colour: Colors.blueAccent,
+                                      title: 'Professional Register',
+                                      onPressed: () {
+                                        Navigator.pushNamed(context,
+                                            'prof_registration_screen');
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ));
+                            });
                       },
                       child: Text(
                         "Register Here",
                         textAlign: TextAlign.center,
                         style: TextStyle(
+                            fontFamily: 'Volkhov',
                             fontWeight: FontWeight.w900,
                             color: Colors.blueAccent),
                       ),

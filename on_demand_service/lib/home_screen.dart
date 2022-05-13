@@ -12,6 +12,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+/*
 class _HomeScreenState extends State<HomeScreen> {
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController newGoogleMapController;
@@ -35,5 +36,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+}
+*/
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    //print(Geolocator.getCurrentPosition());
+    return Scaffold(
+        body: Center(
+            child: Container(
+      child: Text("Hello"),
+    )));
   }
 }
