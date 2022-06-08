@@ -114,13 +114,13 @@ class _ProfLoginScreenState extends State<ProfLoginScreen> {
                     colour: Colors.lightBlueAccent,
                     title: 'Log In',
                     onPressed: () async {
-                      setState(() {
-                        showSpinner = true;
-                      });
                       try {
                         if (!_emailKey.currentState.validate()) {
                         } else if (!_pwdKey.currentState.validate()) {
                         } else {
+                          setState(() {
+                            showSpinner = true;
+                          });
                           final user = await _auth.signInWithEmailAndPassword(
                               email: "mailpraveen927@gmail.com",
                               password: "Praveen@27");

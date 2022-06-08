@@ -114,14 +114,13 @@ class _ProfRegistrationScreenState extends State<ProfRegistrationScreen> {
                     colour: Colors.lightBlueAccent,
                     title: 'Next',
                     onPressed: () async {
-                      setState(() {
-                        showSpinner = true;
-                      });
-
                       try {
                         if (!_emailKey.currentState.validate()) {
                         } else if (!_pwdKey.currentState.validate()) {
                         } else {
+                          setState(() {
+                            showSpinner = true;
+                          });
                           Navigator.pushNamed(
                               context, 'prof_registration_screen1',
                               arguments: {'email': email, 'pass': password});

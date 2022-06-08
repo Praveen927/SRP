@@ -114,14 +114,13 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
                     colour: Colors.lightBlueAccent,
                     title: 'Register',
                     onPressed: () async {
-                      setState(() {
-                        showSpinner = true;
-                      });
-
                       try {
                         if (!_emailKey.currentState.validate()) {
                         } else if (!_pwdKey.currentState.validate()) {
                         } else {
+                          setState(() {
+                            showSpinner = true;
+                          });
                           final newUser =
                               await _auth.createUserWithEmailAndPassword(
                                   email: email, password: password);
@@ -130,7 +129,6 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
                           }
                         }
                       } catch (e) {
-                        //print("Wrong Userid or Password");
                         print(e);
                         setState(() {
                           showSpinner = false;

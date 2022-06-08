@@ -13,7 +13,9 @@ import '../Customised/round_button.dart';
 
 const kTextFieldDecoration = InputDecoration(
   hintText: 'Enter a value',
-  hintStyle: TextStyle(color: Colors.grey),
+  hintStyle: TextStyle(
+    color: Colors.grey,
+  ),
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   border: OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
@@ -42,6 +44,9 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
   String name;
   var phone;
   var work;
+  var desc;
+  var gps;
+  var rate = "100";
   String city;
   List<String> dropList = ["Plumber", "Electrician", "Mechanic"];
   bool showSpinner = false;
@@ -60,13 +65,18 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
       final response = await http.post(
         Uri.parse(url),
         body: json.encode({
+          "id": uname.substring(0, 4) + phone.toString(),
           "uname": uname,
           "name": name,
           "phone": phone,
           "work": work,
           "city": city,
           "email": email,
-          "profile_img": _uploadedFileURL
+          "profile_img": _uploadedFileURL,
+          "description": desc,
+          "rate": rate,
+          "avilability": 0,
+          "gps": gps
         }),
       );
     } catch (error) {
@@ -143,8 +153,52 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
                   ),
                 ),
                 SizedBox(height: hei / 25),
+                Field(
+                  title: "Username",
+                  hinttxt: "Enter Username",
+                  keyV: _unameKey,
+                  onChanged: (value) {
+                    uname = value;
+                  },
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 50,
+                ),
+                Field(
+                  title: "Full Name",
+                  hinttxt: "Enter your full name",
+                  keyV: _nameKey,
+                  onChanged: (value) {
+                    name = value;
+                  },
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 50,
+                ),
+                Field(
+                  title: "Phone",
+                  keyV: _phoneKey,
+                  hinttxt: "Enter your phone number",
+                  onChanged: (value) {
+                    phone = value;
+                  },
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 50,
+                ),
+                Field(
+                  title: "City",
+                  keyV: _cityKey,
+                  hinttxt: "Enter your city",
+                  onChanged: (value) {
+                    city = value;
+                  },
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 50,
+                ),
                 Text(
-                  "  Username",
+                  "  Job",
                   style: TextStyle(
                       letterSpacing: 0.5,
                       fontSize: 20,
@@ -153,127 +207,6 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 200,
-                ),
-                Form(
-                  key: _unameKey,
-                  child: TextFormField(
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "Enter Username";
-                        }
-                        return null;
-                      },
-                      keyboardType: TextInputType.name,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        uname = value;
-                        //Do something with the user input.
-                      },
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter Your Username',
-                      )),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 50,
-                ),
-                Text(
-                  "  Full Name",
-                  style: TextStyle(
-                      letterSpacing: 0.5,
-                      fontSize: 20,
-                      fontFamily: 'Volkhov',
-                      fontWeight: FontWeight.w500),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 200,
-                ),
-                Form(
-                  key: _nameKey,
-                  child: TextFormField(
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "Enter Name";
-                        }
-                        return null;
-                      },
-                      keyboardType: TextInputType.name,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        name = value;
-                        //Do something with the user input.
-                      },
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter Your Full Name',
-                      )),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 50,
-                ),
-                Text(
-                  "  Phone",
-                  style: TextStyle(
-                      letterSpacing: 0.5,
-                      fontSize: 20,
-                      fontFamily: 'Volkhov',
-                      fontWeight: FontWeight.w500),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 200,
-                ),
-                Form(
-                  key: _phoneKey,
-                  child: TextFormField(
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "Enter Phone Number";
-                        }
-                        return null;
-                      },
-                      keyboardType: TextInputType.phone,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        phone = value;
-                        //Do something with the user input.
-                      },
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter Your Phone Number',
-                      )),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 50,
-                ),
-                Text(
-                  "  City",
-                  style: TextStyle(
-                      letterSpacing: 0.5,
-                      fontSize: 20,
-                      fontFamily: 'Volkhov',
-                      fontWeight: FontWeight.w500),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 200,
-                ),
-                Form(
-                  key: _cityKey,
-                  child: TextFormField(
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "Enter City";
-                        }
-                        return null;
-                      },
-                      keyboardType: TextInputType.name,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                        city = value;
-                        //ci something with the user input.
-                      },
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter Your City',
-                      )),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 50,
                 ),
                 GFMultiSelect(
                   items: dropList,
@@ -311,20 +244,56 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 50,
                 ),
+                Field(
+                  title: "Rate",
+                  hinttxt: "Enter Charge per hour",
+                  onChanged: (value) {
+                    rate = value;
+                  },
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 50,
+                ),
+                Text(
+                  "  Decription",
+                  style: TextStyle(
+                      letterSpacing: 0.5,
+                      fontSize: 20,
+                      fontFamily: 'Volkhov',
+                      fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 200,
+                ),
+                Form(
+                  child: TextFormField(
+                      maxLines: 8,
+                      keyboardType: TextInputType.name,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        desc = value;
+                        //ci something with the user input.
+                      },
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: '\n\n\nMention detail about your job',
+                      )),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 50,
+                ),
                 RoundedButton(
                     colour: Colors.lightBlueAccent,
                     title: 'Register',
                     onPressed: () async {
-                      setState(() {
-                        showSpinner = true;
-                      });
-
                       try {
                         if (!_unameKey.currentState.validate()) {
                         } else if (!_nameKey.currentState.validate()) {
                         } else if (!_phoneKey.currentState.validate()) {
                         } else if (!_cityKey.currentState.validate()) {
                         } else {
+                          setState(() {
+                            showSpinner = true;
+                          });
                           final newUser =
                               await _auth.createUserWithEmailAndPassword(
                                   email: email, password: password);
@@ -355,5 +324,57 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
   }
 }
 
- // Used only if you need a single picture
-
+// Used only if you need a single picture
+class Field extends StatelessWidget {
+  var title;
+  var hinttxt;
+  var keyV;
+  Function onChanged;
+  Field({this.title, this.hinttxt, this.keyV, this.onChanged});
+  @override
+  Widget build(BuildContext context) {
+    double wid = MediaQuery.of(context).size.width;
+    double hei = MediaQuery.of(context).size.height;
+    return Table(
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      columnWidths: {
+        0: FlexColumnWidth(1.8),
+        1: FlexColumnWidth(4),
+      },
+      children: [
+        TableRow(children: [
+          Text(
+            title,
+            style: TextStyle(
+                letterSpacing: 0.5,
+                fontSize: 20,
+                fontFamily: 'Volkhov',
+                fontWeight: FontWeight.w500),
+          ),
+          Container(
+            width: wid / 1.7,
+            height: hei / 20,
+            child: Form(
+              key: keyV,
+              child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return "Invalid Input";
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.name,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    onChanged(value);
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                    hintText: hinttxt,
+                  )),
+            ),
+          )
+        ])
+      ],
+    );
+  }
+}

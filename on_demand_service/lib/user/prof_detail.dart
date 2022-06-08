@@ -10,7 +10,17 @@ class Professional {
   String phone;
   String city;
   String prof_url;
-  Professional({this.name, this.phone, this.prof_url, this.city});
+  String id;
+  String rate;
+  String desc;
+  Professional(
+      {this.id,
+      this.name,
+      this.phone,
+      this.prof_url,
+      this.city,
+      this.desc,
+      this.rate});
 }
 
 Future<List<Professional>> read(String id) async {
@@ -22,14 +32,18 @@ Future<List<Professional>> read(String id) async {
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) return [];
       extractedData.forEach((key, value) {
         String temp = value['work'].toString();
         if (temp.contains(id)) {
           Professional ref = Professional(
+              id: value['id'],
               name: value['uname'],
               phone: value['phone'],
               prof_url: value['profile_img'],
-              city: value['city']);
+              city: value['city'],
+              rate: value['rate'],
+              desc: value['description']);
           prof_list.add(ref);
         }
       });
@@ -55,104 +69,148 @@ class _ProfDetailScreenState extends State<ProfDetailScreen> {
     double wid = MediaQuery.of(context).size.width;
     double hei = MediaQuery.of(context).size.height;
     return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: FutureBuilder<List<Professional>>(
-        future: read(workid.toString()),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index) {
-                return userList(context, snapshot.data[index]);
+        body: SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: wid / 20, vertical: hei / 10),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios,
+                      size: wid / 15,
+                    )),
+                Text(
+                  "Professionals",
+                  style: TextStyle(
+                      fontSize: 35,
+                      fontFamily: 'Volkhov',
+                      fontWeight: FontWeight.w700),
+                ),
+              ],
+            ),
+            FutureBuilder<List<Professional>>(
+              future: read(workid.toString()),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: new Text("No Professionals"));
+                } else if (snapshot.hasData) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      return userList(context, snapshot.data[index]);
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return new Text("${snapshot.error}");
+                }
+                return new CircularProgressIndicator();
               },
-            );
-          } else if (snapshot.hasError) {
-            return new Text("${snapshot.error}");
-          }
-          return new CircularProgressIndicator();
-        },
+            ),
+          ],
+        ),
       ),
     ));
   }
 }
 
 Widget userList(BuildContext context, Professional prof) {
-  return Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
-      color: Color.fromARGB(143, 173, 202, 210),
-    ),
-    width: double.infinity,
-    height: 120,
-    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Center(
-          child: Container(
-              width: 70,
-              height: 70,
-              margin: EdgeInsets.only(right: 15),
-              child: Image(image: NetworkImage(prof.prof_url))),
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                prof.name,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
-              ),
-              SizedBox(
-                height: 6,
-              ),
-              Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.location_on,
-                    color: Colors.red,
-                    size: 20,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(prof.city,
-                      style: TextStyle(
-                          color: Colors.black45,
-                          fontSize: 13,
-                          letterSpacing: .3)),
-                ],
-              ),
-              SizedBox(
-                height: 6,
-              ),
-              Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.call,
-                    color: Colors.blue,
-                    size: 20,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(prof.phone,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                          letterSpacing: .3)),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
+  double wid = MediaQuery.of(context).size.width;
+  double hei = MediaQuery.of(context).size.height;
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(context, 'prof_detail1_screen',
+              arguments: {"prof": prof});
+        },
+        child: Card(
+            elevation: hei / 200,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                prof.prof_url != null
+                    ? Image(
+                        image: NetworkImage(prof.prof_url),
+                        height: hei / 10,
+                        width: wid / 5.5,
+                        fit: BoxFit.fill,
+                      )
+                    : Container(
+                        color: Color.fromARGB(255, 195, 193, 193),
+                        height: hei / 10,
+                        width: wid / 5.5,
+                        child: Icon(
+                          Icons.photo,
+                          color: Colors.white,
+                          size: hei / 25,
+                        )),
+                SizedBox(
+                  width: wid / 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      prof.name,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                    ),
+                    SizedBox(
+                      height: hei / 100,
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.phone,
+                          size: hei / 60,
+                        ),
+                        Text(" " + prof.phone.substring(0, 5) + "XXXXXX"),
+                      ],
+                    ),
+                    SizedBox(
+                      height: hei / 150,
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.location_on,
+                          size: hei / 60,
+                        ),
+                        Text(" " + prof.city),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: wid / 4,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Icon(
+                      Icons.rate_review,
+                      size: hei / 60,
+                    ),
+                    Text(" 4.5"),
+                  ],
+                ),
+                SizedBox(
+                  width: wid / 20,
+                )
+              ],
+            )),
+      ),
+      SizedBox(
+        height: hei / 75,
+      )
+    ],
   );
 }

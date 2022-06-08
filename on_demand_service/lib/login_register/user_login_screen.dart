@@ -121,24 +121,24 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
                     colour: Colors.lightBlueAccent,
                     title: 'Log In',
                     onPressed: () async {
-                      setState(() {
-                        showSpinner = true;
-                      });
                       try {
-                        // if (!_emailKey.currentState.validate()) {
-                        // } else if (!_pwdKey.currentState.validate()) {
-                        // } else {
-                        final user = await _auth.signInWithEmailAndPassword(
-                            email: "123@gmail.com", password: "12345678");
-                        if (user != null) {
-                          Navigator.pushNamed(context, 'user_home_screen');
+                        if (!_emailKey.currentState.validate()) {
+                        } else if (!_pwdKey.currentState.validate()) {
                         } else {
                           setState(() {
-                            showSpinner = false;
+                            showSpinner = true;
                           });
-                          print("Invalid Input");
+                          final user = await _auth.signInWithEmailAndPassword(
+                              email: "123@gmail.com", password: "12121212");
+                          if (user != null) {
+                            Navigator.pushNamed(context, 'user_home_screen');
+                          } else {
+                            setState(() {
+                              showSpinner = false;
+                            });
+                            print("Invalid Input");
+                          }
                         }
-                        //   }
                       } catch (e) {
                         setState(() {
                           showSpinner = false;
