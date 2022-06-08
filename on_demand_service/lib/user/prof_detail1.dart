@@ -1,8 +1,13 @@
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../Customised/round_button.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:firebase_database/firebase_database.dart';
 
 class Professional {
   String name;
@@ -32,6 +37,7 @@ class _ProfDetail1ScreenState extends State<ProfDetail1Screen> {
   Widget build(BuildContext context) {
     Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
     var prof = args['prof'];
+    var datetime = args['datetime'];
     Professional professional = Professional(
         id: prof.id,
         name: prof.name,
@@ -68,8 +74,8 @@ class _ProfDetail1ScreenState extends State<ProfDetail1Screen> {
               child: prof.prof_url != null
                   ? Image(
                       image: NetworkImage(prof.prof_url),
-                      height: hei / 7.5,
-                      width: wid / 5.5,
+                      height: hei / 6,
+                      width: wid / 4,
                       fit: BoxFit.fill,
                     )
                   : Container(
@@ -137,6 +143,7 @@ class _ProfDetail1ScreenState extends State<ProfDetail1Screen> {
               professional.desc.toString(),
               textAlign: TextAlign.justify,
               style: TextStyle(
+                wordSpacing: 1.5,
                 color: Colors.black54,
                 fontSize: 20,
               ),
@@ -222,8 +229,45 @@ class _ProfDetail1ScreenState extends State<ProfDetail1Screen> {
             RoundedButton(
               colour: Colors.blueAccent,
               title: "Book Now",
-              onPressed: () {
-                Navigator.pushNamed(context, 'book_prof_screen');
+              onPressed: () async {
+                try {
+                  var url =
+                      "https://spr-project-236b2-default-rtdb.asia-southeast1.firebasedatabase.app/data";
+                  final response = await http.get(Uri.parse(url + ".json"));
+                  if (response.statusCode == 200) {
+                    final extractedData =
+                        json.decode(response.body) as Map<String, dynamic>;
+                    if (extractedData == null) return [];
+                    extractedData.forEach((key, value) async {
+                      if (value['id'].toString().contains(professional.id)) {
+                        List<Object> wrks;
+                        try {
+                          wrks = value['jobs'];
+                          if (wrks == null) {
+                            wrks = [
+                              {
+                                "Booked Time": DateTime.now().toString(),
+                                "Request Time": datetime.toString()
+                              }
+                            ];
+                          } else {
+                            wrks.add({
+                              "Booked Time": DateTime.now().toString(),
+                              "Request Time": datetime.toString()
+                            });
+                          }
+                          var newurl =
+                              url + "/" + key.toString() + "/jobs.json";
+
+                          final response = await http.put(Uri.parse(newurl),
+                              body: jsonEncode(wrks));
+                        } catch (e) {
+                          print(e);
+                        }
+                      }
+                    });
+                  }
+                } catch (e) {}
               },
             ),
           ],

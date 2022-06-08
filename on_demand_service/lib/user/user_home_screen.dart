@@ -48,15 +48,16 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         setState(() {
           selectedTime = pickedT;
           _hour = selectedTime.hour.toString();
+          if (selectedTime.hour < 10) _hour = "0" + _hour;
           _minute = selectedTime.minute.toString();
-          _time = _hour + ' : ' + _minute;
+          if (selectedTime.minute < 10) _minute = "0" + _minute;
+          _time = _hour + ':' + _minute + ':' + "00";
           _timeController.text = _time;
-          _timeController.text = formatDate(
-              DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
-              [hh, ':', nn, " ", am]).toString();
         });
+        var t = selectedDate.toString().substring(0, 11) + _time;
+
         Navigator.pushNamed(context, 'prof_detail_screen',
-            arguments: {'work': 0});
+            arguments: {'work': 0, 'datetime': DateTime.tryParse(t)});
       }
     }
   }

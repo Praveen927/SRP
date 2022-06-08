@@ -131,7 +131,8 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
                           final user = await _auth.signInWithEmailAndPassword(
                               email: "123@gmail.com", password: "12121212");
                           if (user != null) {
-                            Navigator.pushNamed(context, 'user_home_screen');
+                            Navigator.popAndPushNamed(
+                                context, 'user_home_screen');
                           } else {
                             setState(() {
                               showSpinner = false;

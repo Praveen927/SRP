@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async' show Future;
 import 'package:http/http.dart' as http;
@@ -23,7 +21,7 @@ class Professional {
       this.rate});
 }
 
-Future<List<Professional>> read(String id) async {
+Future<List<Professional>> read(String id, DateTime datetime) async {
   var url =
       "https://spr-project-236b2-default-rtdb.asia-southeast1.firebasedatabase.app/" +
           "data.json";
@@ -35,7 +33,10 @@ Future<List<Professional>> read(String id) async {
       if (extractedData == null) return [];
       extractedData.forEach((key, value) {
         String temp = value['work'].toString();
-        if (temp.contains(id)) {
+        datetime.subtract(const Duration(hours: 2));
+        int flag = datetime.compareTo(DateTime.tryParse(value['avilability']));
+        print(flag);
+        if (temp.contains(id) && flag >= 0) {
           Professional ref = Professional(
               id: value['id'],
               name: value['uname'],
@@ -66,6 +67,7 @@ class _ProfDetailScreenState extends State<ProfDetailScreen> {
   Widget build(BuildContext context) {
     Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
     var workid = args['work'];
+    var datetime = args['datetime'];
     double wid = MediaQuery.of(context).size.width;
     double hei = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -95,7 +97,7 @@ class _ProfDetailScreenState extends State<ProfDetailScreen> {
               ],
             ),
             FutureBuilder<List<Professional>>(
-              future: read(workid.toString()),
+              future: read(workid.toString(), datetime),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return Center(child: new Text("No Professionals"));
@@ -104,7 +106,7 @@ class _ProfDetailScreenState extends State<ProfDetailScreen> {
                     shrinkWrap: true,
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
-                      return userList(context, snapshot.data[index]);
+                      return userList(context, snapshot.data[index], datetime);
                     },
                   );
                 } else if (snapshot.hasError) {
@@ -120,7 +122,7 @@ class _ProfDetailScreenState extends State<ProfDetailScreen> {
   }
 }
 
-Widget userList(BuildContext context, Professional prof) {
+Widget userList(BuildContext context, Professional prof, DateTime datetime) {
   double wid = MediaQuery.of(context).size.width;
   double hei = MediaQuery.of(context).size.height;
   return Column(
@@ -129,7 +131,7 @@ Widget userList(BuildContext context, Professional prof) {
       GestureDetector(
         onTap: () {
           Navigator.pushNamed(context, 'prof_detail1_screen',
-              arguments: {"prof": prof});
+              arguments: {"prof": prof, "datetime": datetime.toString()});
         },
         child: Card(
             elevation: hei / 200,

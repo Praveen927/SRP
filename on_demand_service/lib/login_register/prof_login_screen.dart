@@ -125,7 +125,7 @@ class _ProfLoginScreenState extends State<ProfLoginScreen> {
                               email: "mailpraveen927@gmail.com",
                               password: "Praveen@27");
                           if (user != null) {
-                            Navigator.pushNamed(context, 'home_screen');
+                            Navigator.popAndPushNamed(context, 'home_screen');
                           }
                         }
                       } catch (e) {

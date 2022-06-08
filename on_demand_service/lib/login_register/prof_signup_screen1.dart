@@ -75,8 +75,8 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
           "profile_img": _uploadedFileURL,
           "description": desc,
           "rate": rate,
-          "avilability": 0,
-          "gps": gps
+          "avilability": DateTime.now().toString(),
+          "gps": [],
         }),
       );
     } catch (error) {
@@ -198,7 +198,7 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
                   height: MediaQuery.of(context).size.height / 50,
                 ),
                 Text(
-                  "  Job",
+                  " Job",
                   style: TextStyle(
                       letterSpacing: 0.5,
                       fontSize: 20,
@@ -255,7 +255,7 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
                   height: MediaQuery.of(context).size.height / 50,
                 ),
                 Text(
-                  "  Decription",
+                  "Decription",
                   style: TextStyle(
                       letterSpacing: 0.5,
                       fontSize: 20,
@@ -300,7 +300,7 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
 
                           await writeData();
                           if (newUser != null) {
-                            Navigator.pushNamed(
+                            Navigator.popAndPushNamed(
                               context,
                               'home_screen',
                             );

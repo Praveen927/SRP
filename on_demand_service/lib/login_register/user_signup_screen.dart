@@ -125,7 +125,8 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
                               await _auth.createUserWithEmailAndPassword(
                                   email: email, password: password);
                           if (newUser != null) {
-                            Navigator.pushNamed(context, 'user_home_screen');
+                            Navigator.popAndPushNamed(
+                                context, 'user_home_screen');
                           }
                         }
                       } catch (e) {

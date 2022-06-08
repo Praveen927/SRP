@@ -121,7 +121,7 @@ class _ProfRegistrationScreenState extends State<ProfRegistrationScreen> {
                           setState(() {
                             showSpinner = true;
                           });
-                          Navigator.pushNamed(
+                          Navigator.popAndPushNamed(
                               context, 'prof_registration_screen1',
                               arguments: {'email': email, 'pass': password});
                         }
