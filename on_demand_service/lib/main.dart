@@ -8,7 +8,6 @@ import 'package:on_demand_service/login_register/user_signup_screen.dart';
 import 'package:on_demand_service/user/prof_detail.dart';
 import 'package:on_demand_service/user/prof_detail1.dart';
 import 'package:on_demand_service/user/user_home_screen.dart';
-import 'package:on_demand_service/user/map.dart';
 import 'welcome_screen.dart';
 import 'home_screen.dart';
 
@@ -36,7 +35,6 @@ class MyApp extends StatelessWidget {
         'user_home_screen': (context) => UserHomeScreen(),
         'prof_detail_screen': (context) => ProfDetailScreen(),
         'prof_detail1_screen': (context) => ProfDetail1Screen(),
-        'map': (context) => MapSample()
       },
     );
   }
