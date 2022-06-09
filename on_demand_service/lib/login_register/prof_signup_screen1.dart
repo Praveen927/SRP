@@ -9,6 +9,8 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:getwidget/getwidget.dart';
 import '../Customised/round_button.dart';
 
+import 'package:geolocator/geolocator.dart';
+
 //code for designing the UI of our text field where the user writes his email id or password
 
 const kTextFieldDecoration = InputDecoration(
@@ -299,6 +301,12 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
                                   email: email, password: password);
 
                           await writeData();
+
+                          Position position = await Geolocator()
+                              .getCurrentPosition(
+                                  desiredAccuracy: LocationAccuracy.high);
+                          print("done");
+                          print(position.latitude);
                           if (newUser != null) {
                             Navigator.popAndPushNamed(
                               context,
