@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,7 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
   void writeData() async {
     var url =
         "https://spr-project-236b2-default-rtdb.asia-southeast1.firebasedatabase.app/" +
-            "data.json";
+            "data/.json";
 
     try {
       final response = await http.post(
@@ -78,7 +79,7 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
           "description": desc,
           "rate": rate,
           "avilability": DateTime.now().toString(),
-          "gps": [],
+          "gps": gps,
         }),
       );
     } catch (error) {
@@ -300,17 +301,28 @@ class _ProfRegistrationScreen1State extends State<ProfRegistrationScreen1> {
                               await _auth.createUserWithEmailAndPassword(
                                   email: email, password: password);
 
-                          await writeData();
-
                           Position position = await Geolocator()
                               .getCurrentPosition(
                                   desiredAccuracy: LocationAccuracy.high);
-                          print("done");
-                          print(position.latitude);
+                          gps = {
+                            "lat": position.latitude,
+                            "long": position.longitude
+                          };
+                          await writeData();
+
                           if (newUser != null) {
+                            Fluttertoast.showToast(
+                                msg:
+                                    'Registration Successful. \nLogin to continue',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.black45,
+                                textColor: Colors.white);
+                            sleep(Duration(seconds: 2));
                             Navigator.popAndPushNamed(
                               context,
-                              'home_screen',
+                              'prof_login_screen',
                             );
                           }
                         }

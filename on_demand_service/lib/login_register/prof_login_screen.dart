@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../Customised/round_button.dart';
 
 //code for designing the UI of our text field where the user writes his email id or password
@@ -121,11 +122,30 @@ class _ProfLoginScreenState extends State<ProfLoginScreen> {
                           setState(() {
                             showSpinner = true;
                           });
+                          email = "prof@gmail.com";
                           final user = await _auth.signInWithEmailAndPassword(
-                              email: "mailpraveen927@gmail.com",
-                              password: "Praveen@27");
+                              email: email, password: "12121212");
                           if (user != null) {
-                            Navigator.popAndPushNamed(context, 'home_screen');
+                            var url =
+                                "https://spr-project-236b2-default-rtdb.asia-southeast1.firebasedatabase.app/" +
+                                    "data/.json";
+                            try {
+                              final response = await http.get(Uri.parse(url));
+                              if (response.statusCode == 200) {
+                                final extractedData = json.decode(response.body)
+                                    as Map<String, dynamic>;
+                                if (extractedData == null) return [];
+                                extractedData.forEach((key, value) {
+                                  if (value['email'] == email) {
+                                    Navigator.popAndPushNamed(
+                                        context, 'home_screen',
+                                        arguments: {"pkey": key});
+                                  }
+                                });
+                              }
+                            } catch (error) {
+                              throw error;
+                            }
                           }
                         }
                       } catch (e) {

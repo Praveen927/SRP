@@ -5,6 +5,7 @@ import 'package:on_demand_service/login_register/prof_signup_screen.dart';
 import 'package:on_demand_service/login_register/prof_signup_screen1.dart';
 import 'package:on_demand_service/login_register/user_login_screen.dart';
 import 'package:on_demand_service/login_register/user_signup_screen.dart';
+import 'package:on_demand_service/user/emer_prof_detail.dart';
 import 'package:on_demand_service/user/prof_detail.dart';
 import 'package:on_demand_service/user/prof_detail1.dart';
 import 'package:on_demand_service/user/user_home_screen.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         'user_home_screen': (context) => UserHomeScreen(),
         'prof_detail_screen': (context) => ProfDetailScreen(),
         'prof_detail1_screen': (context) => ProfDetail1Screen(),
+        'emer_prof_detail': (context) => EmerProfDetailScreen(),
       },
     );
   }

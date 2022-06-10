@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:on_demand_service/Customised/round_button.dart';
 import '../Customised/list_card.dart';
 import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart';
+import 'package:geolocator/geolocator.dart';
 
 class UserHomeScreen extends StatefulWidget {
   static const String idScreen = "main";
@@ -27,7 +29,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
 
-  Future<Null> _selectDateTime(BuildContext context) async {
+  Future<Null> _selectDateTime(BuildContext context, uid, wid) async {
     final DateTime pickedD = await showDatePicker(
         context: context,
         initialDate: selectedDate,
@@ -56,8 +58,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         });
         var t = selectedDate.toString().substring(0, 11) + _time;
 
-        Navigator.pushNamed(context, 'prof_detail_screen',
-            arguments: {'work': 0, 'datetime': DateTime.tryParse(t)});
+        Navigator.pushNamed(context, 'prof_detail_screen', arguments: {
+          'work': 0,
+          'datetime': DateTime.tryParse(t),
+          'uid': uid
+        });
       }
     }
   }
@@ -74,6 +79,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    var uid = args['uid'];
     double wid = MediaQuery.of(context).size.width;
     double hei = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -136,7 +143,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                     colour: Colors.lightBlueAccent,
                                     title: "Select Date and Time",
                                     onPressed: () {
-                                      _selectDateTime(context);
+                                      _selectDateTime(context, uid, 1);
                                     },
                                   ),
                                 ],
@@ -206,6 +213,19 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
             ),
             SizedBox(
               height: hei / 30,
+            ),
+            ListCard(
+              title: "  Emergency\nService",
+              img_url: "Resources/images/emergency.png",
+              size: hei / 7,
+              onPressed: () async {
+                Position position = await Geolocator()
+                    .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                Navigator.pushNamed(context, 'emer_prof_detail', arguments: {
+                  "lat": position.latitude,
+                  "long": position.longitude,
+                });
+              },
             ),
           ],
         ),

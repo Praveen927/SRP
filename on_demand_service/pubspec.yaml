@@ -36,12 +36,13 @@ dependencies:
   json_serializable: ^6.1.6
   firebase_auth: ^0.18.1+1
   geolocator: ^5.3.2+2
-  firebase_core: ^0.5.3
+  firebase_core: 
   scrollable_positioned_list: ^0.3.1
-  firebase_storage: ^5.0.1
+  firebase_storage: 
   date_format: ^2.0.6
   image_picker: ^0.6.7+22
   getwidget: ^3.0.1
+  flutter_phone_direct_caller: ^2.0.0
   
 
 dev_dependencies:

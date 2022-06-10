@@ -68,6 +68,7 @@ class _ProfDetailScreenState extends State<ProfDetailScreen> {
     Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
     var workid = args['work'];
     var datetime = args['datetime'];
+    var uid = args['uid'];
     double wid = MediaQuery.of(context).size.width;
     double hei = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -106,7 +107,8 @@ class _ProfDetailScreenState extends State<ProfDetailScreen> {
                     shrinkWrap: true,
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
-                      return userList(context, snapshot.data[index], datetime);
+                      return userList(
+                          context, snapshot.data[index], datetime, uid);
                     },
                   );
                 } else if (snapshot.hasError) {
@@ -122,7 +124,8 @@ class _ProfDetailScreenState extends State<ProfDetailScreen> {
   }
 }
 
-Widget userList(BuildContext context, Professional prof, DateTime datetime) {
+Widget userList(
+    BuildContext context, Professional prof, DateTime datetime, uid) {
   double wid = MediaQuery.of(context).size.width;
   double hei = MediaQuery.of(context).size.height;
   return Column(
@@ -130,8 +133,11 @@ Widget userList(BuildContext context, Professional prof, DateTime datetime) {
     children: [
       GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, 'prof_detail1_screen',
-              arguments: {"prof": prof, "datetime": datetime.toString()});
+          Navigator.pushNamed(context, 'prof_detail1_screen', arguments: {
+            "prof": prof,
+            "datetime": datetime.toString(),
+            "uid": uid
+          });
         },
         child: Card(
             elevation: hei / 200,

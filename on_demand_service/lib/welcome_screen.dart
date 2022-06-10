@@ -43,7 +43,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   colour: Colors.blueAccent,
                   title: 'Professional Log In',
                   onPressed: () {
-                    Navigator.pushNamed(context, 'map');
+                    Navigator.pushNamed(context, 'prof_login_screen');
                   },
                 ),
                 SizedBox(height: hei / 25),

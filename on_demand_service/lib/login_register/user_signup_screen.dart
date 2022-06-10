@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+import 'package:http/http.dart' as http;
 import '../Customised/round_button.dart';
 
 //code for designing the UI of our text field where the user writes his email id or password
@@ -30,6 +33,7 @@ class UserRegistrationScreen extends StatefulWidget {
 
 class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
   final _auth = FirebaseAuth.instance;
+  String name = "User";
   String email;
   String password;
   bool showSpinner = false;
@@ -65,6 +69,21 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
                 ),
                 SizedBox(
                   height: hei / 40,
+                ),
+                Form(
+                  child: TextFormField(
+                      keyboardType: TextInputType.name,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        name = value;
+                        //Do something with the user input.
+                      },
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Enter your name',
+                      )),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 100,
                 ),
                 Form(
                   key: _emailKey,
@@ -125,8 +144,26 @@ class _UserRegistrationScreenState extends State<UserRegistrationScreen> {
                               await _auth.createUserWithEmailAndPassword(
                                   email: email, password: password);
                           if (newUser != null) {
+                            var url =
+                                "https://spr-project-236b2-default-rtdb.asia-southeast1.firebasedatabase.app/" +
+                                    "user/.json";
+                            try {
+                              final response = await http.post(
+                                Uri.parse(url),
+                                body: json.encode({
+                                  "id": name.substring(0, 4) + email.toString(),
+                                  "email": email,
+                                  "gps": [],
+                                }),
+                              );
+                            } catch (error) {
+                              throw error;
+                            }
+
                             Navigator.popAndPushNamed(
-                                context, 'user_home_screen');
+                                context, 'user_home_screen', arguments: {
+                              "uid": name.toString() + email.substring(0, 4)
+                            });
                           }
                         }
                       } catch (e) {

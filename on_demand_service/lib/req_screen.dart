@@ -37,16 +37,17 @@ Future<List<Bookings>> read(String pkey) async {
   } catch (error) {
     throw error;
   }
+  print(book_list);
   return book_list;
 }
 
-class HomeScreen extends StatefulWidget {
+class RequestScreen extends StatefulWidget {
   static const String idScreen = "main";
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _RequestScreenState createState() => _RequestScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _RequestScreenState extends State<RequestScreen> {
   @override
   Widget build(BuildContext context) {
     //print(Geolocator.getCurrentPosition());
@@ -216,7 +217,6 @@ Widget userList(BuildContext context, Bookings req, ct, pkey) {
                 color: Colors.black,
                 child: GestureDetector(
                   onTap: () async {
-                    var conf;
                     var purl =
                         "https://spr-project-236b2-default-rtdb.asia-southeast1.firebasedatabase.app/data/";
                     final response = await http
@@ -230,8 +230,6 @@ Widget userList(BuildContext context, Bookings req, ct, pkey) {
                         if (value != null) {
                           if (value['Booking Id'] != req.booking_id) {
                             lst.add(value);
-                          } else {
-                            conf = value;
                           }
                         }
                       });
@@ -241,16 +239,6 @@ Widget userList(BuildContext context, Bookings req, ct, pkey) {
                                   pkey.toString() +
                                   "/jobs.json"),
                           body: jsonEncode(lst));
-                      print("hello");
-                      final res1 = await http.post(
-                          Uri.parse(
-                              "https://spr-project-236b2-default-rtdb.asia-southeast1.firebasedatabase.app/data/" +
-                                  pkey.toString() +
-                                  "/confirmedjobs/.json"),
-                          body: jsonEncode(conf));
-
-                      print(res1.statusCode);
-
                       Navigator.popAndPushNamed(context, 'home_screen',
                           arguments: {"pkey": pkey});
                     }

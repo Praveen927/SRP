@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../Customised/round_button.dart';
 
@@ -37,6 +39,7 @@ class _ProfDetail1ScreenState extends State<ProfDetail1Screen> {
     Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
     var prof = args['prof'];
     var datetime = args['datetime'];
+    var uid = args['uid'];
     Professional professional = Professional(
         id: prof.id,
         name: prof.name,
@@ -245,14 +248,18 @@ class _ProfDetail1ScreenState extends State<ProfDetail1Screen> {
                           if (wrks == null) {
                             wrks = [
                               {
+                                "Customer Id": uid,
                                 "Booked Time": DateTime.now().toString(),
-                                "Request Time": datetime.toString()
+                                "Request Time": datetime.toString(),
+                                "Booking Id": datetime.toString() + uid
                               }
                             ];
                           } else {
                             wrks.add({
+                              "Customer Id": uid,
                               "Booked Time": DateTime.now().toString(),
-                              "Request Time": datetime.toString()
+                              "Request Time": datetime.toString(),
+                              "Booking Id": datetime.toString() + uid
                             });
                           }
                           var newurl =
@@ -260,6 +267,18 @@ class _ProfDetail1ScreenState extends State<ProfDetail1Screen> {
 
                           final response = await http.put(Uri.parse(newurl),
                               body: jsonEncode(wrks));
+
+                          Fluttertoast.showToast(
+                              msg: 'Request Sent Successfully',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.black45,
+                              textColor: Colors.white);
+                          sleep(Duration(seconds: 2));
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, 'user_home_screen', (route) => false,
+                              arguments: {"uid": uid});
                         } catch (e) {
                           print(e);
                         }
